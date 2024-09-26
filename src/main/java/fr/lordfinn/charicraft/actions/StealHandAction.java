@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 import java.util.*;
 
-public class StealHand extends AbstractDonationAction {
+public class StealHandAction extends AbstractDonationAction {
     private static final double BAT_FLYING_SPEED = 4.0;
     private static final double ALLAY_SCALE = 6.0;
     private static final String ALLAY_CUSTOM_NAME = "Cheh!";
@@ -36,7 +36,7 @@ public class StealHand extends AbstractDonationAction {
     private Queue<Bat> bats = new LinkedList<>();
     private Queue<Allay> allays = new LinkedList<>();
 
-    public StealHand() {
+    public StealHandAction() {
         super(Duration.ofMinutes(2), "Allay, à plus !", "T'as compris la blague ? Ca n'a pas l'air d'allay...", BossBar.Color.BLUE);
     }
 

@@ -15,9 +15,9 @@ import org.bukkit.util.Vector;
 import java.time.Duration;
 import java.util.Random;
 
-public class DropAll extends AbstractDonationAction {
+public class DropAllAction extends AbstractDonationAction {
 
-    public DropAll() {
+    public DropAllAction() {
         super(Duration.ofSeconds(5), "Drop tout tout", "On a donné de l'argent, donne ton stuff !", BossBar.Color.YELLOW);
     }
 

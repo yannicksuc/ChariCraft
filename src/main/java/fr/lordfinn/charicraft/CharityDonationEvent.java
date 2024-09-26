@@ -1,54 +1,63 @@
+package fr.lordfinn.charicraft;
+
+import fr.lordfinn.charicraft.commands.FixDonationAmountCommand;
+
 import java.util.List;
 
 public class CharityDonationEvent {
-    private String eventType; // "event"
-    private EventData data; // The second object in the array
+    private String type; // "twitchcharitydonation"
+    private List<DonationMessage> message; // List of donation messages
+    private String forAccount; // "twitch_account"
+    private String event_id; // Unique event ID
 
-    public String getEventType() {
-        return eventType;
+    public String getType() {
+        return type;
     }
 
-    public EventData getData() {
-        return data;
+    public List<DonationMessage> getMessage() {
+        return message;
     }
 
-    public static class EventData {
-        private String type; // "twitchcharitydonation"
-        private List<DonationMessage> message; // List of donation messages
-        private String forAccount; // "twitch_account"
-        private String event_id; // Unique event ID
+    CharityDonationEvent(int amount, String from, String message) {
+        this.type = "";
+        this.message = List.of(new DonationMessage(from, amount, message));
+    }
 
-        public String getType() {
-            return type;
+    public static class DonationMessage {
+        private String id;
+        private String userId;
+        private String from;
+        private double amount;
+        private String formattedAmount;
+        private String currency;
+        private String donationMessage;
+
+        public DonationMessage(String from, double amount, String message) {
+            this.from = from;
+            this.amount = amount;
+            this.donationMessage = message;
         }
 
-        public List<DonationMessage> getMessage() {
-            return message;
+        public String getFrom() {
+            return from;
         }
 
-        public static class DonationMessage {
-            private String id;
-            private String userId;
-            private String from;
-            private double amount;
-            private String formattedAmount;
-            private String currency;
+        public double getAmount() {
+            if (FixDonationAmountCommand.AMOUNT > 0)
+                return FixDonationAmountCommand.AMOUNT;
+            return amount;
+        }
 
-            public String getFrom() {
-                return from;
-            }
+        public String getFormattedAmount() {
+            return formattedAmount;
+        }
 
-            public double getAmount() {
-                return amount;
-            }
+        public String getCurrency() {
+            return currency;
+        }
 
-            public String getFormattedAmount() {
-                return formattedAmount;
-            }
-
-            public String getCurrency() {
-                return currency;
-            }
+        public String getDonationMessage() {
+            return donationMessage;
         }
     }
 }

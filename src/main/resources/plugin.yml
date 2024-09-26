@@ -2,3 +2,13 @@ name: ChariCraft
 version: '${version}'
 main: fr.lordfinn.charicraft.ChariCraft
 api-version: '1.21'
+
+commands:
+  FixDonationAmount:
+    description: Fix the amount of every donations
+    usage: /FixDonationAmount <value>
+    permission: charicraft.FixDonationAmount
+  TriggerFakeDonation:
+    description: Trigger a fake donation
+    usage: /TriggerFakeDonation <value>
+    permission: charicraft.TriggerFakeDonation

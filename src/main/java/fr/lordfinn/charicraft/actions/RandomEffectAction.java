@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RandomEffect extends AbstractDonationAction {
+public class RandomEffectAction extends AbstractDonationAction {
     private static final int BADNESS_SCALE_FACTOR = 5;
     private static int globalEffectCounter = 0;
     private static final List<EffectWithTranslations> EFFECTS = new ArrayList<>();
@@ -57,7 +57,7 @@ public class RandomEffect extends AbstractDonationAction {
         EFFECTS.add(new EffectWithTranslations(PotionEffectType.WITHER, List.of("Wither", "Wither"), true));
     }
 
-    public RandomEffect() {
+    public RandomEffectAction() {
         super(Duration.ofSeconds(globalEffectCounter), "Effet Aléatoire", "Applique un effet aléatoire à tous les joueurs", BossBar.Color.PURPLE);
     }
 

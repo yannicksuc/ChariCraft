@@ -1,5 +1,8 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id 'java'
+    id 'com.gradleup.shadow' version '8.3.2'
 }
 
 group = 'fr.lordfinn'
@@ -18,10 +21,17 @@ repositories {
 }
 
 dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
+    compileOnly "io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT"
+    implementation 'org.java-websocket:Java-WebSocket:1.5.7'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation "net.kyori:adventure-api:4.17.0"
 }
 
-def targetJavaVersion = 17
+tasks.named('shadowJar', ShadowJar) {
+    relocate 'org.java_websocket', 'fr.lordfinn.charicraft.shaded.websocket'
+}
+
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -45,3 +55,4 @@ processResources {
         expand props
     }
 }
+assemble.dependsOn shadowJar
