@@ -1,0 +1,4 @@
+name: ChariCraft
+version: '${version}'
+main: fr.lordfinn.charicraft.ChariCraft
+api-version: '1.21'
