@@ -20,13 +20,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.time.Duration;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.UUID;
 
 public class SlimeChunkCutterAction extends AbstractDonationAction {
-
-    private final Queue<UUID> turtleQueue = new LinkedList<>();
 
     public SlimeChunkCutterAction() {
         super(Duration.ofMillis(5000), "Slime Chunk Cutter", "C'est carré'", BossBar.Color.GREEN);

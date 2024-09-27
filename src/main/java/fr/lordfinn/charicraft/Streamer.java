@@ -36,6 +36,13 @@ public class Streamer {
 
     // Getter et setter pour bukkitPlayer
     public Player getBukkitPlayer() {
+        if (bukkitPlayer == null) {
+            ChariCraft.getInstance().getServer().forEachAudience(member -> {
+                if (member instanceof Player && ((Player) member).getName().equals(minecraftUsername)) {
+                    setBukkitPlayer((Player) member);
+                }
+            });
+        }
         return bukkitPlayer;
     }
 
