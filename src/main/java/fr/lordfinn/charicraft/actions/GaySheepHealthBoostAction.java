@@ -10,10 +10,8 @@ import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Parrot;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -28,7 +26,7 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
     private Player player;
 
     public GaySheepHealthBoostAction() {
-        super(Duration.ofMinutes(2).plusSeconds(18), "Bip Bip I'm a ", "Fais apparaite un mouton multicolor aux pouvoir magiques", BossBar.Color.BLUE);
+        super(Duration.ofMinutes(1).plusSeconds(13), "Beep Beep", "Fais apparaite un mouton multicolor aux pouvoir magiques", BossBar.Color.BLUE);
     }
 
     @Override
@@ -44,6 +42,7 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
         sheep.customName(Component.text("_jeb"));
         sheep.setCustomNameVisible(false);
         sheep.setInvulnerable(true);
+        sheep.setAI(false);
 
         // Summon parrot as passenger
         Parrot parrot = (Parrot) world.spawnEntity(loc, EntityType.PARROT);
@@ -52,7 +51,7 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
         sheep.addPassenger(parrot);
 
         // Play song
-        audience.playSound(Sound.sound(Key.key("musics.beep"), Sound.Source.PLAYER, 1.0f, 1.0f));
+        audience.filterAudience(m -> m instanceof Player).playSound(Sound.sound(Key.key("musics.beep"), Sound.Source.NEUTRAL, 0.5f, 1.0f), sheep);
         final double[] scale = {0.5};
 
         new BukkitRunnable() {
@@ -61,12 +60,18 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
 
             @Override
             public void run() {
+                if (sheep == null || sheep.isDead()) {
+                    this.cancel();
+                    return;
+                }
+
                 if (tick % 10 == 0) { // Change every half second (126 BPM approx. pacing)
                     parrot.setVariant(Parrot.Variant.values()[random.nextInt(Parrot.Variant.values().length)]);
                     sheep.setColor(DyeColor.values()[random.nextInt(DyeColor.values().length)]);
                     scale[0] = (scale[0] == 2.0 ? 0.5 : 2.0);
                     Objects.requireNonNull(sheep.getAttribute(Attribute.GENERIC_SCALE)).setBaseValue(scale[0]);
                     Objects.requireNonNull(parrot.getAttribute(Attribute.GENERIC_SCALE)).setBaseValue((scale[0] == 2.0 ? 0.8 : 1.2));
+                    sheep.getWorld().spawnParticle(Particle.HEART, sheep.getLocation().add(random.nextDouble(1) * 2 - 1, 2, random.nextDouble(1) * 2 - 1), 1);
                 }
 
                 // Apply potion effects
@@ -87,8 +92,20 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
         if (sheep != null && !sheep.isDead()) {
             Location loc = sheep.getLocation();
             sheep.getPassengers().getFirst().remove();
+            Random random = new Random();
+            for (int i = 0; i < 10; i++) {
+                Firework firework = (Firework) sheep.getWorld().spawnEntity(loc.add(random.nextDouble() * 6 - 3, 0, random.nextDouble() * 6 - 3), EntityType.FIREWORK_ROCKET);
+                FireworkMeta meta = firework.getFireworkMeta();
+                meta.addEffect(FireworkEffect.builder()
+                        .withColor(Color.fromRGB(new Random().nextInt(256), new Random().nextInt(256), new Random().nextInt(256)))
+                        .with(FireworkEffect.Type.values()[new Random().nextInt(FireworkEffect.Type.values().length)])
+                        .flicker(new Random().nextBoolean())
+                        .trail(new Random().nextBoolean())
+                        .build());
+                meta.setPower(1);
+                firework.setFireworkMeta(meta);
+            }
             sheep.remove();
-            streamer.getBukkitPlayer().getWorld().spawnParticle(Particle.FALLING_DUST, loc, 100, 1.0, 1.0, 1.0, 1, new Particle.DustOptions(Color.fromRGB(255, 0, 255), 1));
         }
     }
 }
