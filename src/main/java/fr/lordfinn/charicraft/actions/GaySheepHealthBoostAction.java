@@ -28,7 +28,7 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
     private Player player;
 
     public GaySheepHealthBoostAction() {
-        super(Duration.ofMinutes(2), "Bip Bip I'm a ", "Fais apparaite un mouton multicolor aux pouvoir magiques", BossBar.Color.BLUE);
+        super(Duration.ofMinutes(2).plusSeconds(18), "Bip Bip I'm a ", "Fais apparaite un mouton multicolor aux pouvoir magiques", BossBar.Color.BLUE);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
                     sheep.setColor(DyeColor.values()[random.nextInt(DyeColor.values().length)]);
                     scale[0] = (scale[0] == 2.0 ? 0.5 : 2.0);
                     Objects.requireNonNull(sheep.getAttribute(Attribute.GENERIC_SCALE)).setBaseValue(scale[0]);
-                    Objects.requireNonNull(((Parrot)sheep.getPassengers().getFirst()).getAttribute(Attribute.GENERIC_SCALE)).setBaseValue((scale[0] == 2.0 ? 0.8 : 1.2));
+                    Objects.requireNonNull(parrot.getAttribute(Attribute.GENERIC_SCALE)).setBaseValue((scale[0] == 2.0 ? 0.8 : 1.2));
                 }
 
                 // Apply potion effects
@@ -74,7 +74,7 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
                         .filter(e -> e instanceof Player)
                         .map(e -> (Player) e)
                         .forEach(p -> {
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60, 5, true, true));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60, 5, true, false));
                         });
 
                 tick++;
