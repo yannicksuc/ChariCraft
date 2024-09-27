@@ -71,7 +71,9 @@ public class GaySheepHealthBoostAction extends AbstractDonationAction {
                     scale[0] = (scale[0] == 2.0 ? 0.5 : 2.0);
                     Objects.requireNonNull(sheep.getAttribute(Attribute.GENERIC_SCALE)).setBaseValue(scale[0]);
                     Objects.requireNonNull(parrot.getAttribute(Attribute.GENERIC_SCALE)).setBaseValue((scale[0] == 2.0 ? 0.8 : 1.2));
-                    sheep.getWorld().spawnParticle(Particle.HEART, sheep.getLocation().add(random.nextDouble(1) * 2 - 1, 2, random.nextDouble(1) * 2 - 1), 1);
+                    for (int i = 0; i < 5; i++) {
+                        sheep.getWorld().spawnParticle(Particle.HEART, sheep.getLocation().add(random.nextDouble() * 6 - 3, 2, random.nextDouble() * 6 - 3), 1);
+                    }
                 }
 
                 // Apply potion effects
