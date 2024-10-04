@@ -6,6 +6,8 @@ import fr.lordfinn.charicraft.Streamer;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -21,12 +23,15 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.UUID;
 
+import static net.kyori.adventure.text.format.NamedTextColor.DARK_GREEN;
+import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
+
 public class MineTurtleAction extends AbstractDonationAction {
 
     private final Queue<UUID> turtleQueue = new LinkedList<>();
 
     public MineTurtleAction() {
-        super(Duration.ofMillis(3500), "Mine Turtle", "Hello !", BossBar.Color.GREEN);
+        super(Duration.ofMillis(3500), "Mine Turtle", "Elle adore faire kaboum ! <3", BossBar.Color.GREEN);
     }
 
     @Override
@@ -67,6 +72,15 @@ public class MineTurtleAction extends AbstractDonationAction {
         while (!turtleQueue.isEmpty()) {
             triggerTurtle(turtleQueue.poll());
         }
+        Component titleComponent = Component.text("Get rekt ^^").color(DARK_GREEN);
+        Component subtitleComponent = Component.text("J'adore faire kaboum !").color(GREEN);
+
+        Title title = Title.title(
+                titleComponent,
+                subtitleComponent,
+                Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(2), Duration.ofMillis(1000))
+        );
+        audience.showTitle(title);
     }
 
     private void triggerTurtle(UUID turtleUuid) {

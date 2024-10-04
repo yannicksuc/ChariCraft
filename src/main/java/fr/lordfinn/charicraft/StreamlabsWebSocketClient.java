@@ -28,7 +28,6 @@ public class StreamlabsWebSocketClient extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         String previewMessage = message.length() > 50 ? message.substring(0, 50) + "..." : message;
-        System.out.println("Received message: " + previewMessage);
         handleMessage(message);
     }
 
