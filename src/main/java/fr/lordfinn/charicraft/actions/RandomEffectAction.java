@@ -7,6 +7,8 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Cat;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -14,6 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class RandomEffectAction extends AbstractDonationAction {
@@ -58,7 +61,7 @@ public class RandomEffectAction extends AbstractDonationAction {
     }
 
     public RandomEffectAction() {
-        super(Duration.ofSeconds(globalEffectCounter), "Effet Aléatoire", "Applique un effet aléatoire à tous les joueurs", BossBar.Color.PURPLE);
+        super(Duration.ofSeconds(globalEffectCounter / 2), "Chat noir", "Applique un effet aléatoire à tous les joueurs", BossBar.Color.PURPLE);
     }
 
     @Override
@@ -122,6 +125,10 @@ public class RandomEffectAction extends AbstractDonationAction {
             if (member instanceof Player player) {
                 player.showTitle(titleComponent);
                 applyPotionEffect(player, potionEffect);
+                Cat cat = player.getWorld().spawn(player.getLocation(), Cat.class);
+                cat.setCatType(Cat.Type.BLACK);
+                Objects.requireNonNull(cat.getAttribute(Attribute.GENERIC_SCALE)).setBaseValue((double) globalEffectCounter / 3 - 0.2);
+                cat.setInvulnerable(true);
             }
         });
     }
@@ -129,11 +136,10 @@ public class RandomEffectAction extends AbstractDonationAction {
     private String getEffectNameInFrench(PotionEffectType effectType) {
         for (EffectWithTranslations effectTranslation : EFFECTS) {
             if (effectTranslation.effect().equals(effectType)) {
-                // Assuming that the second element in translations is the French name
                 return effectTranslation.translations().get(1);
             }
         }
-        return "Effet Inconnu"; // Default if translation is not found
+        return "Effet Inconnu";
     }
 
     private record EffectWithTranslations(PotionEffectType effect, List<String> translations, boolean isRelevant) {
